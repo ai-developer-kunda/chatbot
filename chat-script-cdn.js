@@ -27,7 +27,32 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!chatContainer.classList.contains('closed')) {
             addInitialMessageAndOptions();
         }
-    });
+
+    
+    function fetchPropertyListings() {
+        fetch(`https://chatbot-api-ywul.onrender.com/listings/`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            displayPropertyListings(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addBotMessage("Sorry, there was an error fetching property listings.");
+        });
+    }
+
+    
+    function displayPropertyListings(data) {
+        data.forEach(property => {
+            addBotMessage(`Property: ${property.name}, Location: ${property.location}`);
+            
+        });
+    }
 
     function addInitialMessageAndOptions() {
         addBotMessage("This is Kunda House chatbot. How can I help you?");
@@ -58,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
             addBotMessage("Please select a start date and an end date (yyyy-mm-dd to yyyy-mm-dd):");
             chatInput.setAttribute('placeholder', 'yyyy-mm-dd to yyyy-mm-dd');
             awaitingDateRange = true;
+        } else if (optionId === 'recommend-place') {
+            fetchPropertyListings();
         }
         
     }
