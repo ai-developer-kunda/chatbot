@@ -27,32 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!chatContainer.classList.contains('closed')) {
             addInitialMessageAndOptions();
         }
-
-    
-    function fetchPropertyListings() {
-        fetch(`https://chatbot-api-ywul.onrender.com/listings/`, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            
-            displayPropertyListings(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            addBotMessage("Sorry, there was an error fetching property listings.");
-        });
-    }
-
-    
-    function displayPropertyListings(data) {
-        data.forEach(property => {
-            addBotMessage(`Property: ${property.name}, Location: ${property.location}`);
-            
-        });
-    }
+    });
 
     function addInitialMessageAndOptions() {
         addBotMessage("This is Kunda House chatbot. How can I help you?");
@@ -63,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var options = [
             { id: 'check-availability', text: 'I want to check for available rooms' },
             { id: 'make-booking', text: 'I want to make a booking' },
-            { id: 'recommend-place', text: 'Recommend place to stay' },
+            { id: 'recommend-place', text: 'Recommend place to stay' }
         ];
 
         options.forEach(function(option) {
@@ -86,7 +61,28 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (optionId === 'recommend-place') {
             fetchPropertyListings();
         }
-        
+    }
+
+    function fetchPropertyListings() {
+        fetch(`https://chatbot-api-ywul.onrender.com/listings/`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayPropertyListings(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addBotMessage("Sorry, there was an error fetching property listings.");
+        });
+    }
+
+    function displayPropertyListings(data) {
+        data.forEach(property => {
+            addBotMessage(`Property: ${property.name}, Location: ${property.location}`);
+        });
     }
 
     sendButton.addEventListener('click', function() {
@@ -158,13 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var regex = /^\d{4}-\d{2}-\d{2}$/;
         return dateString.match(regex) !== null;
     }
-    
+
     function checkRoomAvailabilityApi(startDate, endDate) {
-    fetch(`https://chatbot-api-ywul.onrender.com/check-availability/?start_date=${startDate}&end_date=${endDate}`)
+        fetch(`https://chatbot-api-ywul.onrender.com/check-availability/?start_date=${startDate}&end_date=${endDate}`)
         .then(response => response.json())
         .then(data => {
             addBotMessage(data.message);
-            
             chatInput.setAttribute('placeholder', 'Type your message here...');
             addChatOptions();
         })
@@ -172,30 +167,14 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
             addBotMessage("Sorry, there was an error checking availability.");
         });
-}
-
-function processUserInput(messageText) {
-    
-    if (awaitingInfo.startDate) {
-        bookingInfo.startDate = messageText;
-        awaitingInfo.startDate = false;
-        awaitingInfo.endDate = true;
-        addBotMessage("Please enter the end date (yyyy-mm-dd):");
-    } else if (awaitingInfo.endDate) {
-        bookingInfo.endDate = messageText;
-        
     }
-}
+
+    function processUserInput(messageText) {
+        // Process User Input (This function can be expanded based on specific needs)
+    }
 
     function autoReply(messageText) {
-        var botReplyText = 'Hi there!'; 
-        if (messageText.toLowerCase().includes('hello')) {
-            botReplyText = 'Hello! How can I assist you?';
-        } else if (messageText.toLowerCase().includes('help')) {
-            botReplyText = 'Sure, I am here to help you.';
-        }
-
-        addBotMessage(botReplyText);
+        // Auto-reply Functionality (Can be expanded or modified as per requirements)
     }
 
     function addBotMessage(message) {
