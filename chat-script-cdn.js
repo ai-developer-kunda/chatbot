@@ -69,13 +69,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             displayPropertyListings(data);
         })
         .catch(error => {
             console.error('Error:', error);
-            addBotMessage("Sorry, there was an error fetching property listings.");
+            addBotMessage(`Sorry, there was an error fetching property listings: ${error.message}`);
         });
     }
 
