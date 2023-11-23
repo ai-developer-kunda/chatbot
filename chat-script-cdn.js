@@ -15,11 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         467618, 467619, 467620, 467621, 467623, 467624, 467625, 467626, 467627,
         467628, 467629, 467630, 467632, 467633
     ];
-
-    setupToggleButton(toggleButton, chatContainer);
-    setupSendButton(sendButton, chatInput);
-    setupChatInput(chatInput);
-    setupChatMessages(chatMessages);
+    
     addInitialMessageAndOptions();
     addChatOptions();
 
