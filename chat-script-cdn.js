@@ -6,6 +6,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var chatMessages = document.getElementById('chat-messages');
 
     var awaitingDateRange = false;
+    var selectedPropertyId = null;
+
+    var propertyIds = [
+        467580, 467581, 467582, 467583, 467584, 467585, 467586, 467587, 467588,
+        467589, 467590, 467591, 467593, 467594, 467595, 467596, 467597, 467598,
+        467599, 467600, 467601, 467603, 467604, 467605, 467606, 467607, 467608,
+        467609, 467610, 467611, 467612, 467613, 467614, 467615, 467616, 467617,
+        467618, 467619, 467620, 467621, 467623, 467624, 467625, 467626, 467627,
+        467628, 467629, 467630, 467632, 467633
+    ];
 
     toggleButton.addEventListener('click', function() {
         chatContainer.classList.toggle('closed');
@@ -23,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var options = [
             { id: 'check-availability', text: 'Check for available rooms' },
             { id: 'make-booking', text: 'Make a booking' },
-            { id: 'recommend-place', text: 'Recommend a place to stay' }
+            { id: 'recommend-place', text: 'Recommend a place to stay' },
+            { id: 'create-enquiry', text: 'Create an enquiry' }
         ];
 
         options.forEach(function(option) {
@@ -48,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'recommend-place':
                 fetchPropertyListings();
                 break;
+            case 'create-enquiry':
+                createEnquiry();
+                break;
             // Additional cases can be added here
         }
     }
@@ -70,9 +84,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayPropertyListings(data) {
-        data.forEach(property => {
-            addBotMessage(`Property: ${property.name}, Location: ${property.location}`);
+        data.forEach((property, index) => {
+            var propertyButton = document.createElement('button');
+            propertyButton.textContent = `Property: ${property.name}, Location: ${property.location}`;
+            propertyButton.classList.add('property-listing');
+            propertyButton.addEventListener('click', function() {
+                selectedPropertyId = propertyIds[index];
+                addBotMessage(`Selected Property ID: ${selectedPropertyId}`);
+            });
+            chatMessages.appendChild(propertyButton);
         });
+    }
+
+    function createEnquiry() {
+        if (selectedPropertyId) {
+            addBotMessage(`Creating an enquiry for Property ID: ${selectedPropertyId}`);
+            // Add functionality to create enquiry here
+        } else {
+            addBotMessage("Please select a property first.");
+        }
     }
 
     sendButton.addEventListener('click', sendMessage);
@@ -86,61 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var messageText = chatInput.value.trim();
         if (messageText) {
             addUserMessage(messageText);
-            if (awaitingDateRange) {
-                handleDateRangeInput(messageText);
-            } else {
-                queryOpenAI(messageText);
-            }
+            chatInput.value = '';
+            chatInput.focus();
         }
-        chatInput.value = '';
-        chatInput.focus();
-    }
-
-    function queryOpenAI(message) {
-        addBotMessage("Processing your request...");
-
-        const openAIRequestData = { messages: [{ role: "user", content: message }] };
-
-        fetch(`https://chatbot-api-ywul.onrender.com/query-openai/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(openAIRequestData)
-        })
-        .then(response => response.json())
-        .then(data => addBotMessage(data.choices[0].message.content.trim()))
-        .catch(error => {
-            console.error('Error:', error);
-            addBotMessage("Sorry, there was an error processing your request.");
-        });
-    }
-
-    function handleDateRangeInput(messageText) {
-        var dates = messageText.split(' to ');
-        if (dates.length === 2 && isValidDate(dates[0]) && isValidDate(dates[1])) {
-            checkRoomAvailabilityApi(dates[0], dates[1]);
-        } else {
-            addBotMessage("Please enter a valid date range (yyyy-mm-dd to yyyy-mm-dd):");
-        }
-    }
-
-    function isValidDate(dateString) {
-        var regex = /^\d{4}-\d{2}-\d{2}$/;
-        return regex.test(dateString);
-    }
-
-    function checkRoomAvailabilityApi(startDate, endDate) {
-        fetch(`https://chatbot-api-ywul.onrender.com/check-availability/?start_date=${startDate}&end_date=${endDate}`)
-        .then(response => response.json())
-        .then(data => addBotMessage(data.message))
-        .catch(error => console.error('Error:', error));
-    }
-
-    function addBotMessage(message) {
-        var botMessage = document.createElement('div');
-        botMessage.textContent = message;
-        botMessage.classList.add('chat-message', 'bot-message');
-        chatMessages.appendChild(botMessage);
-        scrollChatToBottom();
     }
 
     function addUserMessage(message) {
@@ -151,7 +129,17 @@ document.addEventListener('DOMContentLoaded', function () {
         scrollChatToBottom();
     }
 
+    function addBotMessage(message) {
+        var botMessage = document.createElement('div');
+        botMessage.textContent = message;
+        botMessage.classList.add('chat-message', 'bot-message');
+        chatMessages.appendChild(botMessage);
+        scrollChatToBottom();
+    }
+
     function scrollChatToBottom() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+
+    // Additional functions related to chat functionality can be added here
 });
