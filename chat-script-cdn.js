@@ -62,24 +62,18 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'create-enquiry':
                 createEnquiry();
                 break;
-            // Additional cases can be added here
         }
     }
 
     function fetchPropertyListings() {
         fetch(`https://chatbot-api-ywul.onrender.com/listings/`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             displayPropertyListings(data);
         })
         .catch(error => {
             console.error('Error:', error);
-            addBotMessage(`Sorry, there was an error fetching property listings: ${error.message}`);
+            addBotMessage("Sorry, there was an error fetching property listings.");
         });
     }
 
@@ -99,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createEnquiry() {
         if (selectedPropertyId) {
             addBotMessage(`Creating an enquiry for Property ID: ${selectedPropertyId}`);
-            // Add functionality to create enquiry here
+            // Add logic or API call to handle enquiry creation
         } else {
             addBotMessage("Please select a property first.");
         }
@@ -140,6 +134,4 @@ document.addEventListener('DOMContentLoaded', function () {
     function scrollChatToBottom() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
-    // Additional functions related to chat functionality can be added here
 });
