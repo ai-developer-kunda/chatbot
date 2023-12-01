@@ -128,25 +128,24 @@
 .enquiry-form {
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* This ensures that the children (input and textarea) stretch to fill the width */
+    align-items: stretch;
 }
 
 .form-input, .submit-button {
-    box-sizing: border-box; /* This includes padding and border in the element's total width and height */
-    width: calc(100% - 20px); /* Adjust the percentage and subtraction value as needed */
+    box-sizing: border-box;
+    width: calc(100% - 20px); 
     padding: 10px;
-    margin-bottom: 10px; /* This adds consistent space below each element */
+    margin-bottom: 10px; 
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 .submit-button {
     cursor: pointer;
-    background-color: #4CAF50; /* Example button color */
+    background-color: #4CAF50;
     color: white;
 }
 
-/* Reset margins and paddings for consistent spacing */
 * {
     margin: 0;
     padding: 0;
