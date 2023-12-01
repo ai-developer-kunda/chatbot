@@ -1,0 +1,153 @@
+#my-chatbot-container {
+    width: 300px;
+    height: 500px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    position: fixed;
+    bottom: 80px; 
+    right: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+}
+
+
+#chat-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+
+#chat-messages {
+    height: 420px; 
+    overflow-y: auto;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+
+.chat-message {
+    max-width: 80%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.bot-message {
+    background-color: #e0e0e0;
+    align-self: flex-start;
+    margin-left: 10px;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    margin-right: 10px;
+}
+
+
+#chat-input, #send-button {
+    font-size: 0.9em; 
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+#chat-input {
+    width: 70%;
+}
+
+#send-button {
+    width: 20%;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#send-button:hover {
+    background-color: #218838;
+}
+
+
+#chatbot-toggle {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff; 
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+#chatbot-toggle img {
+    width: 100%;
+    height: auto;
+}
+
+#my-chatbot-container.closed {
+    display: none;
+}
+
+.chat-option {
+    margin: 10px 0;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.enquiry-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* This ensures that the children (input and textarea) stretch to fill the width */
+}
+
+.form-input, .submit-button {
+    box-sizing: border-box; /* This includes padding and border in the element's total width and height */
+    width: calc(100% - 20px); /* Adjust the percentage and subtraction value as needed */
+    padding: 10px;
+    margin-bottom: 10px; /* This adds consistent space below each element */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    cursor: pointer;
+    background-color: #4CAF50; /* Example button color */
+    color: white;
+}
+
+/* Reset margins and paddings for consistent spacing */
+* {
+    margin: 0;
+    padding: 0;
+}
